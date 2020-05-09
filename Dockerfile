@@ -4,15 +4,15 @@
 # Github Repo: https://github.com/threenine/dockpressdebug
 
  # Always use the latest version og WordPress
-FROM wordpress:latest
+FROM wordpress:php7.3-apache
 LABEL "uk.co.threenine"="three nine  consulting"
-LABEL version="1.0"
+LABEL version="1.1"
 LABEL description="Wordpress development environment with xdebug"
 
 ENV XDEBUG_PORT 9000
 
  #Add sudo in order to run wp-cli as the www-data user
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && apt-get install -y sudo less subversion && apt-get -q -y install mysql-server
+RUN apt-get update && export DEBIAN_FRONTEND=noninteractive && apt-get install -y sudo less subversion && apt-get -q -y install mysql-common mariadb-server-10.3
 
 # Add WP-CLI
 RUN curl -o /bin/wp-cli.phar https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -20,7 +20,7 @@ COPY wp-su.sh /bin/wp
 RUN chmod +x /bin/wp-cli.phar /bin/wp
 
 # Use phpUNit for unit test 
-RUN curl -Lo /tmp/phpunit.phar https://phar.phpunit.de/phpunit-5.7.phar \
+RUN curl -Lo /tmp/phpunit.phar https://phar.phpunit.de/phpunit-9.phar \
     && chmod +x /tmp/phpunit.phar \
     && sudo mv /tmp/phpunit.phar /bin/phpunit
 
